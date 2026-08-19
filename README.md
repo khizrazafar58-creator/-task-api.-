@@ -1,55 +1,38 @@
-# Spam Message Classifier (Machine Learning)
+# Task API
 
-A beginner-friendly ML project that classifies text messages as **spam** or **ham** (not spam) using Natural Language Processing (NLP) and a Naive Bayes classifier — built with Python and scikit-learn.
+A small CRUD API for managing a to-do list, built with **FastAPI** (Python).
+Built for the FlyRank AI Internship — Backend AI Engineering track — BE-01: *Build your first CRUD API*.
 
-## What it does
+## What this is
 
-Given a text message, the model predicts whether it's spam (unwanted/promotional/scam content) or a genuine message, along with a confidence score.
+A REST API with full CRUD (Create, Read, Update, Delete) operations on an in-memory list of tasks. Data lives in memory only — it resets when the server restarts (that's intentional; databases come in the next assignment).
 
-## How it works
+## How to run it
 
-1. **Data loading** — Reads labeled messages from `spam_data.csv`
-2. **Text preprocessing** — Lowercases and cleans the text
-3. **Feature extraction** — Converts text into numerical features using **TF-IDF** (Term Frequency–Inverse Document Frequency)
-4. **Model training** — Trains a **Multinomial Naive Bayes** classifier, a standard algorithm for text classification
-5. **Evaluation** — Reports accuracy, precision, recall, and a confusion matrix
-6. **Prediction** — Tests the trained model on new, unseen messages
-
-## Tech stack
-
-- Python 3
-- pandas — data handling
-- scikit-learn — TF-IDF vectorization, Naive Bayes model, evaluation metrics
-
-## How to run
-
+1. Install Python 3.10+ if you don't have it: https://python.org
+2. Install dependencies:
 ```bash
-pip install pandas scikit-learn
-python spam_classifier.py
+   pip install fastapi uvicorn
 ```
-
-## Sample output
-
+3. Start the server:
+```bash
+   uvicorn main:app --reload
 ```
-Model Accuracy: 80.00%
+4. The API is now running at `http://localhost:8000`
+5. Interactive Swagger docs are automatically available at `http://localhost:8000/docs`
 
---- Testing on new messages ---
-[SPAM] (58.2% confidence) -> Congratulations! Claim your free prize now by clicking this link.
-[HAM ] (66.3% confidence) -> Hey, are we still on for coffee tomorrow morning?
-```
+## Endpoints
 
-## Dataset
+| Method | Path | Description | Success | Errors |
+|---|---|---|---|---|
+| GET | `/` | API info | 200 | — |
+| GET | `/health` | Health check | 200 | — |
+| GET | `/tasks` | List all tasks | 200 | — |
+| GET | `/tasks/{id}` | Get one task | 200 | 404 if not found |
+| POST | `/tasks` | Create a task | 201 | 400 if title missing/empty |
+| PUT | `/tasks/{id}` | Update a task | 200 | 404 if not found, 400 if body invalid |
+| DELETE | `/tasks/{id}` | Delete a task | 204 | 404 if not found |
+| GET | `/stats` | Task counts (extra) | 200 | — |
+| POST | `/reset` | Reset to example tasks (extra) | 200 | — |
 
-This repo includes a small 40-message sample dataset (`spam_data.csv`) for demonstration purposes. For a more robust and production-realistic model, this project can be retrained on the public **SMS Spam Collection Dataset** (available on Kaggle and the UCI Machine Learning Repository), which contains 5,000+ labeled real-world messages.
-
-## Possible next steps / improvements
-
-- Train on the full SMS Spam Collection dataset for better accuracy
-- Try other models (Logistic Regression, SVM) and compare performance
-- Add cross-validation instead of a single train/test split
-- Build a simple web interface (Flask/Streamlit) to test messages interactively
-- Explore explainability: which words most influence the spam prediction?
-
-## Author
-
-Khizra Zafar — Bachelor's student, University of Engineering and Technology (UET), Lahore
+## Example: curl output
